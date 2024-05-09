@@ -1,0 +1,651 @@
+OPEN DATA "C:\Users\HP\Downloads\canada usd exchange rate hw 6.xlsx"
+CALENDAR(M) 1975:1
+DATA(FORMAT=XLSX,ORG=COLUMNS) 1975:01 2023:12 EXCHART<<"exchrt"
+*Problem 1
+GRAPH(STYLE=LINE,HEADER="US/Canada Exchange Rate",SUBHEADER="problem 1",VLABEL="Exchange rate",HLABEL="Time") 1
+# EXCHART
+*I believe the data does not appear to be covariance stationary as its mean and covariance do not seem to be constant.
+
+*Problem 2
+@bjident EXCHART
+
+*The graph refutes my answer to one as the autocorrelations and partial autoorrelations appear to reach zero.
+
+*PROBLEM 3: Running the models with a linear time trend for ARMA(1,1), AR(1), AR(2), and AR(3).
+SET TIME = T
+BOXJENK(REGRESSORS,CONST,AR=1,MA=1,DEFINE=MODEL1LT) EXCHART / MODEL1LTRESIDS
+# TIME
+
+Box-Jenkins - Estimation by LS Gauss-Newton
+Convergence in     8 Iterations. Final criterion was  0.0000032 <=  0.0000100
+
+Dependent Variable EXCHART
+Monthly Data From 1975:02 To 2023:12
+Usable Observations                       587
+Degrees of Freedom                        583
+Centered R^2                        0.9858517
+R-Bar^2                             0.9857789
+Uncentered R^2                      0.9997946
+Mean of Dependent Variable       1.2478438728
+Std Error of Dependent Variable  0.1515693115
+Standard Error of Estimate       0.0180749630
+Sum of Squared Residuals         0.1904686001
+Log Likelihood                      1524.8545
+Durbin-Watson Statistic                1.9740
+Q(36-2)                               37.7704
+Significance Level of Q             0.3009796
+
+    Variable                        Coeff      Std Error      T-Stat      Signif
+************************************************************************************
+1.  CONSTANT                      1.327013864  0.185998993      7.13452  0.00000000
+2.  AR{1}                         0.987096193  0.006272061    157.37987  0.00000000
+3.  MA{1}                         0.261306197  0.040307999      6.48274  0.00000000
+4.  TIME                         -0.000098540  0.000441107     -0.22339  0.82330815
+
+@regcrits
+
+Information Criteria
+AIC          -5.178
+SBC          -5.141
+Hannan-Quinn -5.164
+(log) FPE    -5.178
+
+BOXJENK(REGRESSORS,CONST,AR=1,MA=0,DEFINE=MODEL2LT) EXCHART / MODEL2LTRESIDS
+# TIME
+
+Box-Jenkins - Estimation by LS Gauss-Newton
+Convergence in     4 Iterations. Final criterion was  0.0000000 <=  0.0000100
+
+Dependent Variable EXCHART
+Monthly Data From 1975:02 To 2023:12
+Usable Observations                       587
+Degrees of Freedom                        584
+Centered R^2                        0.9848215
+R-Bar^2                             0.9847695
+Uncentered R^2                      0.9997797
+Mean of Dependent Variable       1.2478438728
+Std Error of Dependent Variable  0.1515693115
+Standard Error of Estimate       0.0187054692
+Sum of Squared Residuals         0.2043384346
+Regression F(2,584)                18945.6917
+Significance Level of F             0.0000000
+Log Likelihood                      1504.2243
+Durbin-Watson Statistic                1.4850
+Q(36-1)                               80.7638
+Significance Level of Q             0.0000177
+
+    Variable                        Coeff      Std Error      T-Stat      Signif
+************************************************************************************
+1.  CONSTANT                      1.378939071  0.240450777      5.73481  0.00000002
+2.  AR{1}                         0.990767820  0.005123733    193.36836  0.00000000
+3.  TIME                         -0.000172727  0.000516931     -0.33414  0.73839358
+
+@regcrits
+
+Information Criteria
+AIC          -5.111
+SBC          -5.082
+Hannan-Quinn -5.100
+(log) FPE    -5.111
+
+BOXJENK(REGRESSORS,CONST,AR=3,MA=0,DEFINE=MODEL3LT) EXCHART / MODEL3LTRESIDS
+# TIME
+
+Box-Jenkins - Estimation by LS Gauss-Newton
+Convergence in     4 Iterations. Final criterion was  0.0000000 <=  0.0000100
+
+Dependent Variable EXCHART
+Monthly Data From 1975:04 To 2023:12
+Usable Observations                       585
+Degrees of Freedom                        580
+Centered R^2                        0.9857613
+R-Bar^2                             0.9856631
+Uncentered R^2                      0.9997948
+Mean of Dependent Variable       1.2486918860
+Std Error of Dependent Variable  0.1511307601
+Standard Error of Estimate       0.0180959281
+Sum of Squared Residuals         0.1899283153
+Regression F(4,580)                10038.4953
+Significance Level of F             0.0000000
+Log Likelihood                      1519.4917
+Durbin-Watson Statistic                1.9996
+Q(36-3)                               35.9573
+Significance Level of Q             0.3316841
+
+    Variable                        Coeff      Std Error      T-Stat      Signif
+************************************************************************************
+1.  CONSTANT                      1.333651394  0.182494634      7.30789  0.00000000
+2.  AR{1}                         1.262942715  0.041526885     30.41265  0.00000000
+3.  AR{2}                        -0.334424822  0.065509439     -5.10499  0.00000045
+4.  AR{3}                         0.060968178  0.041462250      1.47045  0.14198211
+5.  TIME                         -0.000115495  0.000433606     -0.26636  0.79005674
+
+@regcrits
+
+Information Criteria
+AIC          -5.174
+SBC          -5.129
+Hannan-Quinn -5.157
+(log) FPE    -5.174
+
+*Without linear trend
+
+BOXJENK(CONST,AR=3,MA=0,DEFINE=MODEL1NO) EXCHART / MODEL1NORESIDS
+
+Box-Jenkins - Estimation by LS Gauss-Newton
+Convergence in     3 Iterations. Final criterion was  0.0000000 <=  0.0000100
+
+Dependent Variable EXCHART
+Monthly Data From 1975:04 To 2023:12
+Usable Observations                       585
+Degrees of Freedom                        581
+Centered R^2                        0.9857595
+R-Bar^2                             0.9856859
+Uncentered R^2                      0.9997948
+Mean of Dependent Variable       1.2486918860
+Std Error of Dependent Variable  0.1511307601
+Standard Error of Estimate       0.0180815042
+Sum of Squared Residuals         0.1899526010
+Regression F(3,581)                13405.9984
+Significance Level of F             0.0000000
+Log Likelihood                      1519.4543
+Durbin-Watson Statistic                1.9994
+Q(36-3)                               36.0919
+Significance Level of Q             0.3260406
+
+    Variable                        Coeff      Std Error      T-Stat      Signif
+************************************************************************************
+1.  CONSTANT                      1.290298795  0.072921693     17.69431  0.00000000
+2.  AR{1}                         1.263004178  0.041493172     30.43884  0.00000000
+3.  AR{2}                        -0.334389278  0.065457093     -5.10853  0.00000044
+4.  AR{3}                         0.060720856  0.041419262      1.46601  0.14318784
+
+@REGCRITS
+
+Information Criteria
+AIC          -5.178
+SBC          -5.140
+Hannan-Quinn -5.163
+(log) FPE    -5.178
+
+BOXJENK(CONST,AR=2,MA=0,DEFINE=MODEL2N) EXCHART / MODEL2NORESIDS
+
+Box-Jenkins - Estimation by LS Gauss-Newton
+Convergence in     3 Iterations. Final criterion was  0.0000000 <=  0.0000100
+
+Dependent Variable EXCHART
+Monthly Data From 1975:03 To 2023:12
+Usable Observations                       586
+Degrees of Freedom                        583
+Centered R^2                        0.9857725
+R-Bar^2                             0.9857237
+Uncentered R^2                      0.9997942
+Mean of Dependent Variable       1.2482673265
+Std Error of Dependent Variable  0.1513508838
+Standard Error of Estimate       0.0180839196
+Sum of Squared Residuals         0.1906574093
+Regression F(2,583)                20197.0234
+Significance Level of F             0.0000000
+Log Likelihood                      1521.4669
+Durbin-Watson Statistic                1.9648
+Q(36-2)                               42.0193
+Significance Level of Q             0.1624198
+
+    Variable                        Coeff      Std Error      T-Stat      Signif
+************************************************************************************
+1.  CONSTANT                      1.285696202  0.069143828     18.59452  0.00000000
+2.  AR{1}                         1.247329707  0.040078216     31.12239  0.00000000
+3.  AR{2}                        -0.258479599  0.040014120     -6.45971  0.00000000
+
+@REGCRITS
+
+Information Criteria
+AIC          -5.179
+SBC          -5.149
+Hannan-Quinn -5.167
+(log) FPE    -5.179
+
+BOXJENK(CONST,AR=1,MA=0,DEFINE=MODEL2N) EXCHART / MODEL3N0RESIDS
+
+Box-Jenkins - Estimation by LS Gauss-Newton
+Convergence in     3 Iterations. Final criterion was  0.0000000 <=  0.0000100
+
+Dependent Variable EXCHART
+Monthly Data From 1975:02 To 2023:12
+Usable Observations                       587
+Degrees of Freedom                        585
+Centered R^2                        0.9848183
+R-Bar^2                             0.9847924
+Uncentered R^2                      0.9997796
+Mean of Dependent Variable       1.2478438728
+Std Error of Dependent Variable  0.1515693115
+Standard Error of Estimate       0.0186914082
+Sum of Squared Residuals         0.2043807124
+Regression F(1,585)                37948.2934
+Significance Level of F             0.0000000
+Log Likelihood                      1504.1636
+Durbin-Watson Statistic                1.4844
+Q(36-1)                               81.0024
+Significance Level of Q             0.0000165
+
+    Variable                        Coeff      Std Error      T-Stat      Signif
+************************************************************************************
+1.  CONSTANT                     1.3080793860 0.0880447101     14.85699  0.00000000
+2.  AR{1}                        0.9905600565 0.0050849266    194.80322  0.00000000
+
+@REGCRITS
+
+Information Criteria
+AIC          -5.115
+SBC          -5.092
+Hannan-Quinn -5.106
+(log) FPE    -5.115
+
+BOXJENK(CONST,AR=1,MA=1,DEFINE=MODEL4N) EXCHART / MODEL4N0RESIDS
+
+Box-Jenkins - Estimation by LS Gauss-Newton
+Convergence in     6 Iterations. Final criterion was  0.0000016 <=  0.0000100
+
+Dependent Variable EXCHART
+Monthly Data From 1975:02 To 2023:12
+Usable Observations                       587
+Degrees of Freedom                        584
+Centered R^2                        0.9858505
+R-Bar^2                             0.9858020
+Uncentered R^2                      0.9997946
+Mean of Dependent Variable       1.2478438728
+Std Error of Dependent Variable  0.1515693115
+Standard Error of Estimate       0.0180602837
+Sum of Squared Residuals         0.1904855275
+Log Likelihood                      1524.8284
+Durbin-Watson Statistic                1.9738
+Q(36-2)                               37.8668
+Significance Level of Q             0.2972033
+
+    Variable                        Coeff      Std Error      T-Stat      Signif
+************************************************************************************
+1.  CONSTANT                     1.2898465653 0.0747098906     17.26474  0.00000000
+2.  AR{1}                        0.9869259460 0.0062236438    158.57687  0.00000000
+3.  MA{1}                        0.2614697333 0.0402701906      6.49289  0.00000000
+
+@regcrits
+
+Information Criteria
+AIC          -5.182
+SBC          -5.152
+Hannan-Quinn -5.170
+(log) FPE    -5.182
+
+* Including the linear trend is not warranted as their coeffecients are not statiscally significant so they should be removed for a more parsimonious model.
+*
+* Problem 4
+
+@bjautofit(pmax=5, qmax=5, crit=sbc) EXCHART
+
+BIC analysis of models for series EXCHART
+   MA
+AR     0          1           2          3          4          5
+ 0  1937.2954  1141.1158    544.1177   -16.9931  -644.3710  -317.5932
+ 1 -2994.5336 -3028.8941* -3023.3856 -3019.9346 -3013.5826 -3010.4113
+ 2 -3027.6499 -3023.0675  -3018.4016 -3013.5661 -3007.9309 -3004.0351
+ 3 -3023.8361 -3017.6951  -3010.4422 -3007.2052 -3014.1656 -3003.3475
+ 4 -3018.2972 -3011.4772  -3010.0146 -3012.5306 -3008.0044 -3001.8327
+ 5 -3015.6740 -3009.6938  -3004.5668 -2385.0645 -3001.9241 -2996.9590
+
+* Based on the above results,ARMA(1,1) model fits best as it has the lowest SBC values with no linear trend.
+
+*Problem 5
+BOXJENK(CONST,AR=1,MA=1,DEFINE=ARMA11MODEL) EXCHART * 2022:12 ARMA11MODELRESIDS
+
+Box-Jenkins - Estimation by LS Gauss-Newton
+Convergence in     6 Iterations. Final criterion was  0.0000055 <=  0.0000100
+
+Dependent Variable EXCHART
+Monthly Data From 1975:02 To 2022:12
+Usable Observations                       575
+Degrees of Freedom                        572
+Centered R^2                        0.9859922
+R-Bar^2                             0.9859432
+Uncentered R^2                      0.9997937
+Mean of Dependent Variable       1.2457538864
+Std Error of Dependent Variable  0.1524286571
+Standard Error of Estimate       0.0180721209
+Sum of Squared Residuals         0.1868160892
+Log Likelihood                      1493.3105
+Durbin-Watson Statistic                1.9722
+Q(36-2)                               36.4334
+Significance Level of Q             0.3561317
+
+    Variable                        Coeff      Std Error      T-Stat      Signif
+************************************************************************************
+1.  CONSTANT                     1.2937362785 0.0784135546     16.49889  0.00000000
+2.  AR{1}                        0.9872280810 0.0062784957    157.23959  0.00000000
+3.  MA{1}                        0.2660780128 0.0406927106      6.53871  0.00000000
+
+@REGACTFIT
+
+*PROBLEM 6
+
+UFORECAST(FROM=2023:01,TO=2023:12,EQUATION=ARMA11MODEL,STDERRS=ARMA11MODELFORSTDER,PRINT) ARMA11MODELFORCAST
+
+ Entry     EXCHART
+ 2023:01 1.365014478
+ 2023:02 1.364104119
+ 2023:03 1.363205387
+ 2023:04 1.362318133
+ 2023:05 1.361442211
+ 2023:06 1.360577476
+ 2023:07 1.359723786
+ 2023:08 1.358880999
+ 2023:09 1.358048976
+ 2023:10 1.357227579
+ 2023:11 1.356416673
+ 2023:12 1.355616124
+
+*Problem 7
+
+SET CIL 2023:01 2023:12 = ARMA11MODELFORCAST-(1.96*ARMA11MODELFORSTDER)
+SET CIH 2023:01 2023:12 = ARMA11MODELFORCAST+(1.96*ARMA11MODELFORSTDER)
+PRINT 2023:01 2023:12 CIL CIH
+
+
+ ENTRY          CIL             CIH
+ 2023:01   1.32959312125   1.40043583525
+ 2023:02   1.30731078968   1.42089744804
+ 2023:03   1.29146786922   1.43494290379
+ 2023:04   1.27854278113   1.44609348425
+ 2023:05   1.26740586675   1.45547855486
+ 2023:06   1.25751899399   1.46363595825
+ 2023:07   1.24857462894   1.47087294258
+ 2023:08   1.24037685332   1.47738514401
+ 2023:09   1.23279140350   1.48330654766
+ 2023:10   1.22572129079   1.48873386727
+ 2023:11   1.21909360027   1.49373974629
+ 2023:12   1.21285177126   1.49838047745
+
+
+*Problem 8
+
+GRAPH(STYLE=LINE,HEADER="ARMA (1,1) Forecast with CONFIDENCE INTERVALS",SUBHEADER="FOR THE YEAR 2023",VLABEL="Exchange Rate",$
+HLABEL="Time",FOOTER="Question 8",KEY=BELOW) 3
+# ARMA11MODELFORCAST
+# CIL
+# CIH
+
+*Problem 9
+
+@DFUNIT(DET=NONE,LAGS=2) EXCHART
+
+Dickey-Fuller Unit Root Test, Series EXCHART
+Regression Run From 1975:04 to 2023:12
+Observations        586
+Without intercept or trend
+Using fixed lags 2
+Null is unit root. Reject in left tail.
+
+Sig Level    Crit Value
+1%(**)         -2.56917
+5%(*)          -1.93998
+10%            -1.61591
+
+T-Statistic     0.34498
+
+*WE FAIL TO REJECT THE PRESENCE OF A UNIT ROOT
+
+*PROBLEM 10
+*YES,as the T statistic is not below any of the crictical values at any sinificance level, we fail to reject the null hypothesis
+*and find statistical evidence of the presence of a unit root.
+
+*PROBLEM 11
+
+BOXJENK(DIFFS=1,CONST,MA=1,DEFINE=ARIMAMODEL1) EXCHART / ARIMAMODEL1RESIDS
+
+Box-Jenkins - Estimation by LS Gauss-Newton
+Convergence in     5 Iterations. Final criterion was  0.0000088 <=  0.0000100
+
+Dependent Variable EXCHART, differenced 1 times
+Monthly Data From 1975:02 To 2023:12
+Usable Observations                       587
+Degrees of Freedom                        585
+Centered R^2                        0.9857423
+R-Bar^2                             0.9857180
+Uncentered R^2                      0.9997931
+Mean of Dependent Variable       1.2478438728
+Std Error of Dependent Variable  0.1515693115
+Standard Error of Estimate       0.0181136677
+Sum of Squared Residuals         0.1919414010
+Log Likelihood                      1522.5937
+Durbin-Watson Statistic                1.9770
+Q(36-1)                               37.4524
+Significance Level of Q             0.3572312
+
+    Variable                        Coeff      Std Error      T-Stat      Signif
+************************************************************************************
+1.  CONSTANT                     0.0005578172 0.0009400453      0.59339  0.55314690
+2.  MA{1}                        0.2578692255 0.0400120821      6.44478  0.00000000
+
+@regcrits
+
+Information Criteria
+AIC          -5.177
+SBC          -5.155
+Hannan-Quinn -5.169
+(log) FPE    -5.177
+
+BOXJENK(CONST,AR=1,MA=1,DEFINE=ARMA11MODEL) EXCHART
+
+Box-Jenkins - Estimation by LS Gauss-Newton
+Convergence in     6 Iterations. Final criterion was  0.0000016 <=  0.0000100
+
+Dependent Variable EXCHART
+Monthly Data From 1975:02 To 2023:12
+Usable Observations                       587
+Degrees of Freedom                        584
+Centered R^2                        0.9858505
+R-Bar^2                             0.9858020
+Uncentered R^2                      0.9997946
+Mean of Dependent Variable       1.2478438728
+Std Error of Dependent Variable  0.1515693115
+Standard Error of Estimate       0.0180602837
+Sum of Squared Residuals         0.1904855275
+Log Likelihood                      1524.8284
+Durbin-Watson Statistic                1.9738
+Q(36-2)                               37.8668
+Significance Level of Q             0.2972033
+
+    Variable                        Coeff      Std Error      T-Stat      Signif
+************************************************************************************
+1.  CONSTANT                     1.2898465653 0.0747098906     17.26474  0.00000000
+2.  AR{1}                        0.9869259460 0.0062236438    158.57687  0.00000000
+3.  MA{1}                        0.2614697333 0.0402701906      6.49289  0.00000000
+
+@regcrits
+
+Information Criteria
+AIC          -5.182
+SBC          -5.152
+Hannan-Quinn -5.170
+(log) FPE    -5.182
+
+*Problem 12
+*ARMA(1,1) is a better model as it's SBC of -5.152 is closer to zero than ARIMA(0,1,1) which has a SBC value of -5.155
+
+
+*Problem 13
+
+BOXJENK(DIFFS=1,CONST,MA=1,DEFINE=ARIMAMODEL2) EXCHART / ARIMAMODEL2RESIDS
+
+Box-Jenkins - Estimation by LS Gauss-Newton
+Convergence in     5 Iterations. Final criterion was  0.0000088 <=  0.0000100
+
+Dependent Variable EXCHART, differenced 1 times
+Monthly Data From 1975:02 To 2023:12
+Usable Observations                       587
+Degrees of Freedom                        585
+Centered R^2                        0.9857423
+R-Bar^2                             0.9857180
+Uncentered R^2                      0.9997931
+Mean of Dependent Variable       1.2478438728
+Std Error of Dependent Variable  0.1515693115
+Standard Error of Estimate       0.0181136677
+Sum of Squared Residuals         0.1919414010
+Log Likelihood                      1522.5937
+Durbin-Watson Statistic                1.9770
+Q(36-1)                               37.4524
+Significance Level of Q             0.3572312
+
+    Variable                        Coeff      Std Error      T-Stat      Signif
+************************************************************************************
+1.  CONSTANT                     0.0005578172 0.0009400453      0.59339  0.55314690
+2.  MA{1}                        0.2578692255 0.0400120821      6.44478  0.00000000
+
+@REGACTFIT
+
+*PROBLEM 14
+*
+BOXJENK(DIFFS=1,CONST,MA=1,DEFINE=ARIMAMODELTRUNCATED) EXCHART * 2022:12 ARIMAMODELTRUNCRES
+
+Box-Jenkins - Estimation by LS Gauss-Newton
+Convergence in     6 Iterations. Final criterion was  0.0000016 <=  0.0000100
+
+Dependent Variable EXCHART, differenced 1 times
+Monthly Data From 1975:02 To 2022:12
+Usable Observations                       575
+Degrees of Freedom                        573
+Centered R^2                        0.9858898
+R-Bar^2                             0.9858652
+Uncentered R^2                      0.9997922
+Mean of Dependent Variable       1.2457538864
+Std Error of Dependent Variable  0.1524286571
+Standard Error of Estimate       0.0181222428
+Sum of Squared Residuals         0.1881821870
+Log Likelihood                      1491.2158
+Durbin-Watson Statistic                1.9760
+Q(36-1)                               36.0706
+Significance Level of Q             0.4182893
+
+    Variable                        Coeff      Std Error      T-Stat      Signif
+************************************************************************************
+1.  CONSTANT                     0.0006216542 0.0009539106      0.65169  0.51486238
+2.  MA{1}                        0.2627405960 0.0404329348      6.49818  0.00000000
+
+UFORECAST(FROM=2023:01,TO=2023:12,EQUATION=ARIMAMODELTRUNCATED,STDERRS=ARIMATRUNCFORSTD,PRINT) ARIMAMODELTRUNCFOR
+
+ Entry     EXCHART
+ 2023:01 1.366117701
+ 2023:02 1.366739355
+ 2023:03 1.367361009
+ 2023:04 1.367982663
+ 2023:05 1.368604317
+ 2023:06 1.369225971
+ 2023:07 1.369847625
+ 2023:08 1.370469280
+ 2023:09 1.371090934
+ 2023:10 1.371712588
+ 2023:11 1.372334242
+ 2023:12 1.372955896
+
+*PROBLEM 15
+
+SET ARIMACIL 2023:01 2023:12 = ARIMAMODELTRUNCFOR-1.96*ARIMATRUNCFORSTD
+SET ARIMACIH 2023:01 2023:12 = ARIMAMODELTRUNCFOR+1.96*ARIMATRUNCFORSTD
+PRINT 2023:01 2023:12 ARIMACIL ARIMACIH
+
+
+ ENTRY       ARIMACIL        ARIMACIH
+ 2023:01   1.33059810463   1.40163729641
+ 2023:02   1.30952618490   1.42395252447
+ 2023:03   1.29466264640   1.44005937129
+ 2023:04   1.28256160584   1.45340372018
+ 2023:05   1.27212394553   1.46508468881
+ 2023:06   1.26282969688   1.47562224579
+ 2023:07   1.25438389819   1.48531135280
+ 2023:08   1.24660008483   1.49433847449
+ 2023:09   1.23935148440   1.50283038324
+ 2023:10   1.23254726314   1.51087791282
+ 2023:11   1.22611969860   1.51854878568
+ 2023:12   1.22001669973   1.52589509288
+
+
+* PROBLEM 16
+*
+*
+GRAPH(STYLE=LINE,HEADER="ARIMA(0,1,1) Truncated Forecast with Confidence Intervals",SUBHEADER="FORECAST FOR 2023",$
+VLABEL="Exchange Rate",HLABEL="Time",FOOTER="Question 16 Graph",KEY=BELOW) 3
+# ARIMAMODELTRUNCFOR
+# ARIMACIL
+# ARIMACIH
+
+*PROBLEM 17
+*
+*
+@UFOREERRORS EXCHART ARIMAMODELTRUNCFOR
+
+Forecast Analysis for EXCHART
+From 2023:01 to 2023:12
+Mean Error                 -0.0215477
+Mean Absolute Error         0.0217216
+Root Mean Square Error      0.0262979
+Mean Square Error            0.000692
+Theil's U                    1.562011
+
+Mean Pct Error              -0.016114
+Mean Abs Pct Error           0.016241
+Root Mean Square Pct Error   0.019720
+Theil's Relative U           1.571635
+
+@UFOREERRORS EXCHART ARMA11MODELFORCAST
+
+Forecast Analysis for EXCHART
+From 2023:01 to 2023:12
+Mean Error                 -0.0122256
+Mean Absolute Error         0.0179077
+Root Mean Square Error      0.0204677
+Mean Square Error            0.000419
+Theil's U                    1.215714
+
+Mean Pct Error              -0.009208
+Mean Abs Pct Error           0.013353
+Root Mean Square Pct Error   0.015330
+Theil's Relative U           1.222875
+
+**The ARMA(1,1) model has the smaller MSE.
+
+*PROBLEM 18
+
+BOXJENK(CONST,DEFINE=ACTUALMODEL) EXCHART 2023:01 2023:12 ACTUALMODELRESIDS
+
+Box-Jenkins - Estimation by LS Gauss-Newton
+Convergence in     2 Iterations. Final criterion was  0.0000000 <=  0.0000100
+
+Dependent Variable EXCHART
+Monthly Data From 2023:01 To 2023:12
+Usable Observations                        12
+Degrees of Freedom                         11
+Centered R^2                        0.0000000
+R-Bar^2                             0.0000000
+Uncentered R^2                      0.9998685
+Mean of Dependent Variable       1.3479890529
+Std Error of Dependent Variable  0.0161453438
+Standard Error of Estimate       0.0161453438
+Sum of Squared Residuals         0.0028673934
+Log Likelihood                        33.0083
+Durbin-Watson Statistic                1.0857
+Q(3-0)                                 6.1682
+Significance Level of Q             0.1037088
+
+    Variable                        Coeff      Std Error      T-Stat      Signif
+************************************************************************************
+1.  CONSTANT                     1.3479890529 0.0046607593    289.22091  0.00000000
+
+
+SET ACTUALMODELM 2023:01 2023:12 = EXCHART
+
+GRAPH(STYLE=LINE,HEADER="ARIMA(0,1,1) forecast & ARMA(1,1) Forecast and Actual series",SUBHEADER="Year 2023",$
+FOOTER="Question 18 Graph",KEY=BELOW) 3
+# ARIMAMODELTRUNCFOR
+# ARMA11MODELFORCAST
+# ACTUALMODELM
+
+*ARMA(1,1) forecast is a better estimate than the ARIMA(0,1,1) model because it’s closer to the actual exchange rate series.
+*The forecasts prediction was closer in the first three months and the last three months but not in the months in between.
